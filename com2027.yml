@@ -1,4 +1,4 @@
-project_name: Project Name
+project_name: Career Vue
 
 project_description: |
   Short description (100 words) about the web app proposed and developed. You can provide a brief overview of the project here, including which UN's SDGs this project is tackling.
@@ -6,9 +6,11 @@ project_description: |
   Line breaks are permitted.
 
 group_members:
-  - Member 1
-  - Member 2
-  - Member 3
-  - Member 4
+  - Tejas Aiyar
+  - Daniel Trew
+  - Ryan Robson
+  - Mridul Rana
+  - Thanujan Thuthipavananathan
+  - Sailajan Kanapathypillai
 
 group_image: team.jpg
