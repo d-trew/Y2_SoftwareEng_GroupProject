@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 from datetime import timedelta
 from pathlib import Path
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_g1j4@ap4vc)0mir5(hzjm*1+@(tn_as=eih=9$bma8$mm^0#^'
+SECRET_KEY = 'django-insecure-bo&jvu-1rr6&ggjb3!-agh0f3wvrc=_@w&85pz2lhqj8-ms#z_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -35,25 +35,27 @@ AUTH_USER_MODEL = 'account.User'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=180),
-    'ROTATE_REFRESH_TOKENS':False,
 
+    'ROTATE_REFRESH_TOKENS': False,
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES':(
-        'rest_framework.persmissions.IsAuthenticated',
-    )
+
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173"
+
 ]
 
 INSTALLED_APPS = [
