@@ -31,12 +31,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=255, blank=True, default='')
     avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
-    friends = models.ManyToManyField('self')
-    friends_count = models.IntegerField(default=0)
+    connections = models.ManyToManyField('self')
+    connections_count = models.IntegerField(default=0)
 
     people_you_may_know = models.ManyToManyField('self')
 
-    posts_count = models.IntegerField(default=0)
+    job_list_count = models.IntegerField(default=0)
 
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
