@@ -1,14 +1,14 @@
-project_name: Project Name
+project_name: CareerVue
 
 project_description: |
-  Short description (100 words) about the web app proposed and developed. You can provide a brief overview of the project here, including which UN's SDGs this project is tackling.
-
-  Line breaks are permitted.
+  Our web app is going to be based on LinkedIn but designed in a specialised manner to consider only job postings, inorder to streamline the job searching processing while being sustainable and inclusive. It is designed to tackle Goal 4 (Quality Education) and Goal 8 (Work and Economic Development).
 
 group_members:
-  - Member 1
-  - Member 2
-  - Member 3
-  - Member 4
+  - Tejas Aiyar
+  - Daniel Trew
+  - Ryan Robson
+  - Mridul Rana
+  - Thanujan Thuthipavananathan
+  - Sailajan Kanapathypillai
 
 group_image: team.jpg
