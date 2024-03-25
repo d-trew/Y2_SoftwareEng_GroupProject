@@ -23,27 +23,6 @@ class JobAttachment(models.Model):
 
 class Job(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.ForeignKey(JobCategory, on_delete=models.CASCADE)
-    company = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    is_remote = models.BooleanField(default=False)
-    attachments = models.ManyToManyField(JobAttachment, blank=True)
-
-    is_active = models.BooleanField(default=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, related_name='jobs', on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ('-created_at',)
-
-    def created_at_formatted(self):
-        return timesince(self.created_at)
-
-class Job(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100)
     description = models.TextField()
     salary = models.CharField(max_length=100)
