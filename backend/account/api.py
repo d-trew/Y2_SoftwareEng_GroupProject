@@ -9,13 +9,19 @@ from .forms import SignUpForm
 @permission_classes([])
 def signup(request):
     data = request.data
-    message = 'You have signed up successfully'
+    message = 'success'
 
-    form = SignUpForm(data)
+    # form = SignUpForm(data)
+    form = SignUpForm({
+        'email': data.get('email'),
+        'name': data.get('name'),
+        'password': data.get('password'),
+        'password2': data.get('password2'),
+    })
     if form.is_valid():
         form.save()
 
         # send verification email
     else:
-        message = 'There was an error signing up'
-    return JsonResponse({'status': message})
+        message = 'error'
+    return JsonResponse({'message': message})

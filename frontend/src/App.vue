@@ -47,4 +47,16 @@
 	<main class="py-10 px-8 border-b bg-black border-gray-200 min-h-screen">
 		<RouterView />
 	</main>
+
+    <Toast />
 </template>
+
+<script>
+    import Toast from '@/components/Toast.vue'
+
+    export default {
+        components: {
+            Toast
+        }
+    }
+</script>
