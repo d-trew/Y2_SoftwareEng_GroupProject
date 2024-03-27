@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
-from account.models import User, connectionRequest
+from account.models import User, ConnectionRequest
 from account.serializers import UserSerializer
 # from notification.utils import create_notification
 
@@ -61,8 +61,8 @@ def job_list_profile(request, id):
     if request.user in user.friends.all():
         can_send_connection_request = False
     
-    check1 = connectionRequest.objects.filter(created_for=request.user).filter(created_by=user)
-    check2 = connectionRequest.objects.filter(created_for=user).filter(created_by=request.user)
+    check1 = ConnectionRequest.objects.filter(created_for=request.user).filter(created_by=user)
+    check2 = ConnectionRequest.objects.filter(created_for=user).filter(created_by=request.user)
 
     if check1 or check2:
         can_send_connection_request = False
@@ -94,7 +94,7 @@ def job_create(request):
             job.attachments.add(attachment)
 
         user = request.user
-        user.jobs_count = user.jobs_count + 1
+        user.jobs_count += 1
         user.save()
 
         serializer = JobSerializer(job)
