@@ -1,4 +1,5 @@
 venv/
+backend/account/__pycache__/
 backend/jobListings/__pycache__/
 backend/*.pyc
 backend/*/*.pyc

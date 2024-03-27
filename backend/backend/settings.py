@@ -28,8 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+WEBSITE_URL = 'http://127.0.0.1:8000'
 
 # Application definition
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 AUTH_USER_MODEL = 'account.User'
 
 SIMPLE_JWT = {
@@ -49,14 +52,22 @@ REST_FRAMEWORK = {
     ),
 }
 
+# THE PROBLEM
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:5173"
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://127.0.0.1:5173"
+# ]
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173"
+    "http://localhost:5173",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5173"
-
+    "http://localhost:5173",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
