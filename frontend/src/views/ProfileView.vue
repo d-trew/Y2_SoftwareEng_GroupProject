@@ -5,19 +5,20 @@
                 <img :src="user.get_avatar" class="mb-6 rounded-full">
                 
                 <p><strong>{{ user.name }}</strong></p>
+                <p><strong>{{ user.id }}</strong></p>
 
                 <div class="mt-6 flex space-x-8 justify-around" v-if="user.id">
-                    <RouterLink :to="{name: 'friends', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.friends_count }} friends</RouterLink>
+                    <RouterLink :to="{name: 'connections', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.connections_count }} connections</RouterLink>
                     <!-- <p class="text-xs text-gray-500">{{ user.posts_count }} posts</p> -->
                 </div>
 
                 <div class="mt-6">
                     <button 
                         class="inline-block py-4 px-3 bg-purple-600 text-xs text-white rounded-lg" 
-                        @click="sendFriendshipRequest"
-                        v-if="userStore.user.id !== user.id && can_send_friendship_request"
+                        @click="sendconnectionRequest"
+                        v-if="userStore.user.id !== user.id && can_send_connection_request"
                     >
-                        Send friendship request
+                        Send connection request
                     </button>
 
                     <button 
@@ -98,7 +99,7 @@ import { useUserStore } from '@/stores/user'
 import { useToastStore } from '@/stores/toast'
 
 export default {
-    name: 'FeedView',
+    name: 'ProfileView',
 
     setup() {
         const userStore = useUserStore()
@@ -109,6 +110,43 @@ export default {
             toastStore
         }
     },
+    
+    data() {
+        return {
+            // posts: [],
+            user :{
+                    id: '',
+                    name: '',
+                    email: '',
+                    avatar: '',
+                    connections_count: 0
+                },
+                can_send_connection_request: null,
+        }
+    },
+
+    created() {
+        // Fetch user data asynchronously
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/api/me/')
+                const userData = response.data
+                this.user.id = userData.id
+                this.user.name = userData.name
+                this.user.email = userData.email
+                this.user.avatar = userData.avatar
+                this.user.connections_count = userData.connections_count
+                this.user.get_avatar = userData.avatar
+                this.user.created_at = userData.created_at
+            } catch (error) {
+                console.error('Error fetching user data:', error)
+                // Handle error if necessary
+            }
+        }
+
+        // Call fetchUserData asynchronously
+        fetchUserData()
+    },
 
     components: {
         YouMayKnow,
@@ -116,17 +154,6 @@ export default {
         // FeedItem,
         // FeedForm
     },
-
-    data() {
-        return {
-            // posts: [],
-            user: {
-                id: ''
-            },
-            can_send_friendship_request: null,
-        }
-    },
-
     // mounted() {
     //     this.getFeed()
     // },
@@ -161,13 +188,13 @@ export default {
                 })
         },
 
-        sendFriendshipRequest() {
+        sendConnectionRequest() {
             axios
-                .post(`/api/friends/${this.$route.params.id}/request/`)
+                .post(`/api/connections/${this.$route.params.id}/request/`)
                 .then(response => {
                     console.log('data', response.data)
 
-                    this.can_send_friendship_request = false
+                    this.can_send_connection_request = false
 
                     if (response.data.message == 'request already sent') {
                         this.toastStore.showToast(5000, 'The request has already been sent!', 'bg-red-300')

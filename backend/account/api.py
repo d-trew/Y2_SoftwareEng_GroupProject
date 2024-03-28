@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
+from .models import User, ConnectionRequest
+# from notification.utils import create_notification
 from .forms import SignUpForm
 
 @api_view(['GET'])
@@ -48,3 +50,19 @@ def signup(request):
     print(message)
 
     return JsonResponse({'message': message}, safe=False)
+
+@api_view(['POST'])
+def send_connection_request(request, pk):
+    user = User.objects.get(pk=pk)
+
+    check1 = ConnectionRequest.objects.filter(created_for=request.user).filter(created_by=user)
+    check2 = ConnectionRequest.objects.filter(created_for=user).filter(created_by=request.user)
+
+    if not check1 or not check2:
+        friendrequest = ConnectionRequest.objects.create(created_for=user, created_by=request.user)
+
+        # notification = create_notification(request, 'new_friendrequest', friendrequest_id=friendrequest.id)
+
+        return JsonResponse({'message': 'connection request created'})
+    else:
+        return JsonResponse({'message': 'request already sent'})
