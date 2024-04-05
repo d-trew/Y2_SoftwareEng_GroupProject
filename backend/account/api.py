@@ -6,6 +6,9 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from .models import User, ConnectionRequest
 # from notification.utils import create_notification
 from .forms import SignUpForm
+from .serializers import UserSerializer
+from .forms import ProfileForm
+from django.contrib.auth.forms import PasswordChangeForm
 
 @api_view(['GET'])
 def me(request):
@@ -66,3 +69,33 @@ def send_connection_request(request, pk):
         return JsonResponse({'message': 'connection request created'})
     else:
         return JsonResponse({'message': 'request already sent'})
+
+@api_view(['POST'])
+def editprofile(request):
+    user = request.user
+    email = request.data.get('email')
+
+    if User.objects.exclude(id=user.id).filter(email=email).exists():
+        return JsonResponse({'message': 'email already exists'})
+    else:
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+
+        if form.is_valid():
+            form.save()
+        
+        serializer = UserSerializer(user)
+
+        return JsonResponse({'message': 'information updated', 'user': serializer.data})
+    
+@api_view(['POST'])
+def editpassword(request):
+    user = request.user
+    
+    form = PasswordChangeForm(data=request.POST, user=user)
+
+    if form.is_valid():
+        form.save()
+
+        return JsonResponse({'message': 'success'})
+    else:
+        return JsonResponse({'message': form.errors.as_json()}, safe=False)

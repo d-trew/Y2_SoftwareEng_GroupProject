@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+// import { c } from 'vite/dist/node/types.d-FdqQ54oU'
 
 export const useUserStore = defineStore({
     id: 'user',
@@ -34,6 +35,7 @@ export const useUserStore = defineStore({
                 this.refreshToken()
 
                 console.log('Initialized user:', this.user)
+                console.log('user.avatar', localStorage.getItem('user.avatar'))
             }
         },
 
@@ -83,6 +85,8 @@ export const useUserStore = defineStore({
             localStorage.setItem('user.avatar', this.user.avatar)
 
             console.log('User', this.user)
+            console.log('user.avatar', user.avatar)
+            console.log('user.avatar', localStorage.getItem('user.avatar'))
         },
 
         refreshToken() {

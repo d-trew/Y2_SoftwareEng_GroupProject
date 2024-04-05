@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between">
                 <div class="menu-left">
-                    <a href="#" class="text-xl">Weya</a>
+                    <a href="#" class="text-xl">Wey</a>
                 </div>
 
                 <div class="menu-center flex space-x-12" v-if="userStore.user.isAuthenticated">
@@ -35,7 +35,8 @@
                 <div class="menu-right">
                     <template v-if="userStore.user.isAuthenticated && userStore.user.id">
                         <RouterLink :to="{name: 'profile', params:{'id': userStore.user.id}}">
-                            <img :src="userStore.user.avatar" class="w-12 rounded-full">
+                        <!-- Include the 'media' prefix in the avatar URL -->
+                        <img :src="userStore.user.avatar" class="w-12 rounded-full">
                         </RouterLink>
                     </template>
 
@@ -59,6 +60,8 @@
     import axios from 'axios'
     import Toast from '@/components/Toast.vue'
     import { useUserStore } from '@/stores/user'
+    import { computed } from 'vue';
+
 
     export default {
         setup() {
