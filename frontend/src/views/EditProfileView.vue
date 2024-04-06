@@ -2,16 +2,14 @@
     <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
         <div class="main-left">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <h1 class="mb-6 text-2xl">Sign up</h1>
+                <h1 class="mb-6 text-2xl">Edit profile</h1>
 
                 <p class="mb-6 text-gray-500">
                     Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
                     Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
                 </p>
 
-                <p class="font-bold">
-                    Already have an account? <RouterLink :to="{'name': 'login'}" class="underline">Click here</RouterLink> to log in!
-                </p>
+                <RouterLink to="/profile/edit/password" class="underline">Edit password</RouterLink>
             </div>
         </div>
 
@@ -29,13 +27,11 @@
                     </div>
 
                     <div>
-                        <label>Password</label><br>
-                        <input type="password" v-model="form.password1" placeholder="Your password" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
+                        <label for="avatar" class="cursor-pointer inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Upload Avatar</label>
+                        <input id="avatar" type="file" ref="file" accept="image/*" style="display: none;" @change="handleAvatarChange">
                     </div>
-
-                    <div>
-                        <label>Repeat password</label><br>
-                        <input type="password" v-model="form.password2" placeholder="Repeat your password" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
+                    <div v-if="form.avatar">
+                        <img :src="form.avatar" alt="Avatar" class="mt-4 rounded-full h-20 w-20">
                     </div>
 
                     <template v-if="errors.length > 0">
@@ -45,7 +41,7 @@
                     </template>
 
                     <div>
-                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Sign up</button>
+                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -57,23 +53,24 @@
 import axios from 'axios'
 
 import { useToastStore } from '@/stores/toast'
+import { useUserStore } from '@/stores/user'
 
 export default {
     setup() {
         const toastStore = useToastStore()
+        const userStore = useUserStore()
 
         return {
-            toastStore
+            toastStore,
+            userStore
         }
     },
 
     data() {
         return {
             form: {
-                email: '',
-                name: '',
-                password1: '',
-                password2: ''
+                email: this.userStore.user.email,
+                name: this.userStore.user.name
             },
             errors: [],
         }
@@ -91,37 +88,47 @@ export default {
                 this.errors.push('Your name is missing')
             }
 
-            if (this.form.password1 === '') {
-                this.errors.push('Your password is missing')
-            }
-
-            if (this.form.password1 !== this.form.password2) {
-                this.errors.push('The password does not match')
-            }
-
             if (this.errors.length === 0) {
+                let formData = new FormData()
+                formData.append('avatar', this.$refs.file.files[0])
+                formData.append('name', this.form.name)
+                formData.append('email', this.form.email)
+
                 axios
-                    .post('/api/signup/', this.form)
+                    .post('/api/editprofile/', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        }
+                    })
                     .then(response => {
-                        if (response.data.message === 'success') {
-                            this.toastStore.showToast(5000, 'The user is registered. Please activate your account by clicking your email link.', 'bg-emerald-500')
+                        if (response.data.message === 'information updated') {
+                            this.toastStore.showToast(5000, 'The information was saved', 'bg-emerald-500')
 
-                            this.form.email = ''
-                            this.form.name = ''
-                            this.form.password1 = ''
-                            this.form.password2 = ''
+                            this.userStore.setUserInfo({
+                                id: this.userStore.user.id,
+                                name: this.form.name,
+                                email: this.form.email,
+                                avatar: response.data.user.get_avatar
+                            })
+
+                            this.$router.back()
                         } else {
-                            const data = JSON.parse(response.data.message)
-                            for (const key in data){
-                                this.errors.push(data[key][0].message)
-                            }
-
-                            this.toastStore.showToast(5000, 'Something went wrong. Please try again', 'bg-red-300')
+                            this.toastStore.showToast(5000, `${response.data.message}. Please try again`, 'bg-red-300')
                         }
                     })
                     .catch(error => {
                         console.log('error', error)
                     })
+            }
+        },
+        handleAvatarChange(event) {
+            const file = event.target.files[0]
+            if (file) {
+                const reader = new FileReader()
+                reader.onload = () => {
+                    this.form.avatar = reader.result
+                }
+                reader.readAsDataURL(file)
             }
         }
     }
