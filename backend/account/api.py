@@ -31,6 +31,8 @@ def signup(request):
         'name': data.get('name'),
         'password1': data.get('password1'),
         'password2': data.get('password2'),
+        # default pfp
+        # 'avatar': 'avatars/default.jpg'
     })
 
     if form.is_valid():

@@ -47,7 +47,7 @@
                                 <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
                             </div>
                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-                                <img :src="message.created_by.get_avatar" class="w-[40px] rounded-full">
+                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@
                             v-else
                         >
                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-                                <img :src="message.created_by.get_avatar" class="w-[40px] rounded-full">
+                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
                             </div>
                             <div>
                                 <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
@@ -93,9 +93,10 @@ export default {
 
     setup() {
         const userStore = useUserStore()
-
+        const WEBSITE_URL = 'http://127.0.0.1:8000';
         return {
-            userStore
+            userStore,
+            WEBSITE_URL
         }
     },
 
@@ -169,6 +170,15 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+        },
+            getAvatarURL(avatarPath) {
+                if (avatarPath) {
+                    // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                    return this.WEBSITE_URL + avatarPath;
+                } else {
+                    // Fallback to default avatar URL
+                    return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
+                }
         }
     }
 }
