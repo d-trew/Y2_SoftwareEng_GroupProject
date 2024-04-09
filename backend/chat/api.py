@@ -45,7 +45,7 @@ def conversation_get_or_create(request, user_pk):
 @api_view(['POST'])
 def conversation_send_message(request, pk):
     conversation = Conversation.objects.filter(users__in=list([request.user])).get(pk=pk)
-
+    
     for user in conversation.users.all():
         if user != request.user:
             sent_to = user
@@ -56,6 +56,13 @@ def conversation_send_message(request, pk):
         created_by=request.user,
         sent_to=sent_to
     )
+
+    # Handle image file upload if available
+    image_file = request.FILES.get('image')
+    if image_file:
+        # Save the image file to your media directory or storage
+        conversation_message.image = image_file
+        conversation_message.save()
 
     serializer = ConversationMessageSerializer(conversation_message)
 

@@ -20,6 +20,7 @@ class ConversationMessage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
     body = models.TextField()
+    image = models.ImageField(upload_to='conversation_images/', blank=True, null=True)
     sent_to = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
