@@ -6,6 +6,11 @@ import LoginView from '../views/LoginView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import MessagesView from '../views/MessagesView.vue'
 import SearchView from '../views/SearchView.vue'
+import NotificationsView from '../views/NotificationsView.vue'
+import ProfileView from '../views/ProfileView.vue'
+import ConnectionsView from '../views/ConnectionsView.vue'
+import EditProfileView from '../views/EditProfileView.vue'
+import EditPasswordView from '../views/EditPasswordView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +50,31 @@ const router = createRouter({
       name: 'search',
       component: SearchView
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: NotificationsView
+    },
+    {
+      path: '/profile/:id',
+      name: 'profile',
+      component: ProfileView
+    },
+    {
+      path: '/profile/:id/connections',
+      name: 'connections',
+      component: ConnectionsView
+    },
+    {
+      path: '/profile/edit',
+      name: 'editprofile',
+      component: EditProfileView
+    },
+    {
+      path: '/profile/edit/password',
+      name: 'editpassword',
+      component: EditPasswordView
+    }
   ]
 })
 

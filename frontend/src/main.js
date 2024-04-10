@@ -1,17 +1,25 @@
-import './assets/main.css'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import App from './App.vue';
+import router from './router';
+import axios from 'axios';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import './assets/main.css';
 
-import App from './App.vue'
-import router from './router'
-import axios from 'axios'
+// Set base URL for Axios
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-axios.defaults.baseURL = 'http://localhost:8000/'
+// Create Vue app
+const app = createApp(App);
 
-const app = createApp(App)
+// Use Pinia for state management
+app.use(createPinia());
 
-app.use(createPinia())
-app.use(router, axios)
+// Use Vue Router
+app.use(router);
 
-app.mount('#app')
+// Inject Axios instance into the Vue app
+app.config.globalProperties.$axios = axios;
+
+// Mount the app
+app.mount('#app');
