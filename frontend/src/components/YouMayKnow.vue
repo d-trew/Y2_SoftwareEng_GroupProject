@@ -8,7 +8,7 @@
                     <img src="https://vectorified.com/images/no-profile-picture-icon-14.png" class="rounded-full" style="width: 50px;">
 
                     <div>
-                        <p><strong>User Name</strong></p>
+                        <p><strong>Bob Martin</strong></p>
                         <p class="text-gray-500">Job Title</p>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <img src="https://vectorified.com/images/no-profile-picture-icon-14.png" class="rounded-full" style="width: 50px;">
 
                     <div>
-                        <p><strong>User Name</strong></p>
+                        <p><strong>Steve Walter</strong></p>
                         <p class="text-gray-500">Job Title</p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <img src="https://vectorified.com/images/no-profile-picture-icon-14.png" class="rounded-full" style="width: 50px;">
 
                     <div>
-                        <p><strong>User Name</strong></p>
+                        <p><strong>Megan Fox</strong></p>
                         <p class="text-gray-500">Job Title</p>
                     </div>
                 </div>
