@@ -36,11 +36,15 @@
                         v-for="message in activeConversation.messages"
                         v-bind:key="message.id"
                     >
-                        <div 
+                        <div
                             class="flex w-full mt-2 space-x-3 max-w-md ml-auto justify-end"
                             v-if="message.created_by.id == userStore.user.id"
                         >
                             <div>
+                                <!-- Display the image if available -->
+                                <template v-if="message.image">
+                                    <img :src="getImageURL(message.image)" class="max-w-md rounded-lg">
+                                </template>
                                 <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
                                     <p class="text-sm">{{ message.body }}</p>
                                 </div>
@@ -51,6 +55,7 @@
                             </div>
                         </div>
 
+
                         <div 
                             class="flex w-full mt-2 space-x-3 max-w-md"
                             v-else
@@ -58,12 +63,17 @@
                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
                                 <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
                             </div>
-                            <div>
+                            <div v-if="message.image">
+                                <img :src="getImageURL(message.image)" alt="Attached Image" class="w-full rounded-lg">
+                                <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
+                            </div>
+                            <div v-else>
                                 <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
                                     <p class="text-sm">{{ message.body }}</p>
                                 </div>
                                 <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
                             </div>
+
                         </div>
                     </template>
                 </div>
@@ -73,6 +83,15 @@
                 <form v-on:submit.prevent="submitForm">
                     <div class="p-4">  
                         <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you want to say?"></textarea>
+                    </div>
+                    
+                    <div class="p-4">
+                        <!-- Hidden file input -->
+                        <input type="file" id="fileInput" style="display: none;" v-on:change="handleFileUpload">
+                        <!-- Button to trigger file input -->
+                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg" v-on:click="openFileInput">Choose File</button>
+                        <!-- Display selected file name (optional) -->
+                        <span v-if="selectedFile">{{ selectedFile.name }}</span>
                     </div>
 
                     <div class="p-4 border-t border-gray-100 flex justify-between">
@@ -104,7 +123,8 @@ export default {
         return {
             conversations: [],
             activeConversation: {},
-            body: ''
+            body: '',
+            selectedFile: null
         }
     },
 
@@ -154,31 +174,91 @@ export default {
                     console.log(error)
                 })
         },
-
         submitForm() {
-            console.log('submitForm', this.body)
+            console.log('submitForm', this.body);
+
+            // Check if the message body is empty and no file is selected
+            if (!this.body.trim() && !this.selectedFile) {
+                // Optionally display an error message or handle the condition as needed
+                return;
+            }
+            // Construct FormData object
+            const formData = new FormData();
+            formData.append('body', this.body);
+            formData.append('image', this.selectedFile);
 
             axios
-                .post(`/api/chat/${this.activeConversation.id}/send/`, {
-                    body: this.body
+                .post(`/api/chat/${this.activeConversation.id}/send/`,formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${this.userStore.user.access}`
+                    }
                 })
                 .then(response => {
-                    console.log(response.data)
+                    console.log(response.data);
 
-                    this.activeConversation.messages.push(response.data)
+                    // Check if the response contains an image URL
+                    const imageUrl = response.data.image;
+
+                    // Construct the message object
+                    const message = {
+                        body: this.body,
+                        image: imageUrl, // Assign the image URL to the message object
+                        created_by: this.userStore.user,
+                        created_at_formatted: '0 minutes' // You may need to adjust this value based on your requirements
+                    };
+
+                    // Push the message object into the conversation messages array
+                    this.activeConversation.messages.push(message);
+
+                    // Clear the message body after sending
+                    this.body = '';
+                    // Clear the selected file after sending
+                    this.selectedFile = null;
                 })
                 .catch(error => {
-                    console.log(error)
-                })
+                    console.log(error);
+                });
         },
-            getAvatarURL(avatarPath) {
-                if (avatarPath) {
-                    // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
-                    return this.WEBSITE_URL + avatarPath;
-                } else {
-                    // Fallback to default avatar URL
-                    return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
-                }
+
+        handleFileUpload(event) {
+            this.selectedFile = event.target.files[0];
+        },
+        openFileInput() {
+            // Trigger click event of file input
+            document.getElementById('fileInput').click();
+        },
+
+        // submitForm() {
+        //     console.log('submitForm', this.body)
+
+        //     axios
+        //         .post(`/api/chat/${this.activeConversation.id}/send/`, {
+        //             body: this.body
+        //         })
+        //         .then(response => {
+        //             console.log(response.data)
+
+        //             this.activeConversation.messages.push(response.data)
+        //         })
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        // },
+        getAvatarURL(avatarPath) {
+            if (avatarPath) {
+                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                return this.WEBSITE_URL + avatarPath;
+            } else {
+                // Fallback to default avatar URL
+                return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
+            }
+        },
+        getImageURL(imageUrl) {
+            if (imageUrl) {
+                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                return this.WEBSITE_URL + imageUrl;
+            }
         }
     }
 }
