@@ -14,15 +14,16 @@
                                 v-for="user in conversation.users"
                                 v-bind:key="user.id"
                             >
-                                <img :src="user.get_avatar" class="w-[40px] rounded-full">
-
                                 <p 
                                     class="text-xs font-bold"
                                     v-if="user.id !== userStore.user.id"
-                                >{{ user.name }}</p>
+                                >
+                                {{ user.name }}
+                                <img :src="getAvatarURL(user.get_avatar)" class="w-[40px] rounded-full">
+                                </p>
                             </template>
                         </div>
-
+                            
                         <span class="text-xs text-gray-500">{{ conversation.modified_at_formatted }} ago</span>
                     </div>
                 </div>

@@ -3,11 +3,12 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
-import DashboardView from '../views/DashboardView.vue'
+import FeedView from '../views/FeedView.vue'
 import ChatView from '../views/ChatView.vue'
 import SearchView from '../views/SearchView.vue'
 import NotificationsView from '../views/NotificationsView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import PostView from '@/views/PostView.vue'
 import ConnectionsView from '../views/ConnectionsView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
 import EditPasswordView from '../views/EditPasswordView.vue'
@@ -36,9 +37,9 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: DashboardView
+      path: '/feed',
+      name: 'feed',
+      component: FeedView
     },
     {
       path: '/messages',
@@ -54,6 +55,11 @@ const router = createRouter({
       path: '/notifications',
       name: 'notifications',
       component: NotificationsView
+    },
+    {
+      path: '/:id',
+      name: 'postview',
+      component: PostView
     },
     {
       path: '/profile/:id',
