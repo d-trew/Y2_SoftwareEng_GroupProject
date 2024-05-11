@@ -27,7 +27,7 @@
                 <div class="p-4 text-center bg-gray-100 rounded-lg flex flex-col items-center justify-center">
                     <img src="https://vectorified.com/images/no-profile-picture-icon-14.png" class="mb-6 rounded-full" style="height: 150px;">
 
-                    <p><strong>{{ user.name }}</strong></p>
+                    <!-- <p><strong>{{ user.name }}</strong></p> -->
 
                     <div class="mt-6 flex space-x-8 justify-around">
                         <p class="text-xs text-gray-500">0 Connections</p>
