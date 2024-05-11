@@ -22,10 +22,10 @@ class JobAttachmentSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     created_by = UserSerializer(read_only=True)
-    categories = JobCategorySerializer(many=True)
+    # categories = JobCategorySerializer(many=True)
     attachments = JobAttachmentSerializer(many=True)
 
     class Meta:
         model = Job
-        fields = ['id', 'title', 'description', 'salary', 'company', 'location', 'is_remote', 'duration', 'posted_at', 'deadline', 'categories', 'attachments', 'is_active', 'created_at', 'created_by']
+        fields = ['id', 'title', 'description', 'posted_at', 'deadline', 'attachments', 'is_active', 'created_at', 'created_by']
         read_only_fields = ['posted_at', 'created_at', 'created_by']

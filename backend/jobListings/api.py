@@ -16,7 +16,7 @@ from .serializers import JobSerializer,JobCategorySerializer
 def job_list(request):
     user_ids = [request.user.id]
 
-    for user in request.user.friends.all():
+    for user in request.user.connections.all():
         user_ids.append(user.id)
 
     jobs = Job.objects.filter(created_by_id__in=list(user_ids))
@@ -24,7 +24,7 @@ def job_list(request):
     trend = request.GET.get('trend', '')
 
     if trend:
-        jobs = jobs.filter(body__icontains='#' + trend).filter(is_private=False)
+        jobs = jobs.filter(description__icontains='#' + trend).filter(is_remote=False)
 
     serializer = JobSerializer(jobs, many=True)
 
@@ -35,10 +35,10 @@ def job_list(request):
 def job_detail(request, pk):
     user_ids = [request.user.id]
 
-    for user in request.user.friends.all():
+    for user in request.user.connections.all():
         user_ids.append(user.id)
 
-    job = job.objects.filter(Q(created_by_id__in=list(user_ids)) | Q(is_private=False)).get(pk=pk)
+    job = job.objects.filter(Q(created_by_id__in=list(user_ids)) | Q(is_remote=False)).get(pk=pk)
 
     return JsonResponse({
         'job': JobCategorySerializer(job).data
@@ -50,15 +50,15 @@ def job_list_profile(request, id):
     user = User.objects.get(pk=id)
     jobs = Job.objects.filter(created_by_id=id)
 
-    if not request.user in user.friends.all():
-        jobs = jobs.filter(is_private=False)
+    if not request.user in user.connections.all():
+        jobs = jobs.filter(is_remote=False)
 
     jobs_serializer = JobSerializer(jobs, many=True)
     user_serializer = UserSerializer(user)
 
     can_send_connection_request = True
 
-    if request.user in user.friends.all():
+    if request.user in user.connections.all():
         can_send_connection_request = False
     
     check1 = ConnectionRequest.objects.filter(created_for=request.user).filter(created_by=user)
@@ -74,11 +74,11 @@ def job_list_profile(request, id):
     }, safe=False)
 
 
-@api_view(['job'])
+@api_view(['POST'])
 def job_create(request):
-    form = JobForm(request.job)
+    form = JobForm(request.POST)
     attachment = None
-    attachment_form = AttachmentForm(request.job, request.FILES)
+    attachment_form = AttachmentForm(request.POST, request.FILES)
 
     if attachment_form.is_valid():
         attachment = attachment_form.save(commit=False)
@@ -94,7 +94,7 @@ def job_create(request):
             job.attachments.add(attachment)
 
         user = request.user
-        user.jobs_count += 1
+        user.job_list_count += 1
         user.save()
 
         serializer = JobSerializer(job)
@@ -106,15 +106,15 @@ def job_create(request):
 
 @api_view(['DELETE'])
 def job_delete(request, pk):
-    job = job.objects.filter(created_by=request.user).get(pk=pk)
+    job = Job.objects.filter(created_by=request.user).get(pk=pk)
     job.delete()
 
     return JsonResponse({'message': 'job deleted'})
 
 
-@api_view(['job'])
+@api_view(['POST'])
 def job_report(request, pk):
-    job = job.objects.get(pk=pk)
+    job = Job.objects.get(pk=pk)
     job.reported_by_users.add(request.user)
     job.save()
 

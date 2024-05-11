@@ -1,15 +1,15 @@
 from django.forms import ModelForm
 
-from .models import Post, PostAttachment
+from .models import Job, JobAttachment
 
 
 class JobForm(ModelForm):
     class Meta:
-        model = Post
-        fields = ('body', 'is_private',)
+        model = Job
+        fields = ('title','description','deadline')
 
 
 class AttachmentForm(ModelForm):
     class Meta:
-        model = PostAttachment
-        fields = ('image',)
+        model = JobAttachment
+        fields = ('document',)
