@@ -82,7 +82,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    'django_extensions',
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -174,7 +174,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GRAPH_MODELS = {
-    'all_applications': True,
-    'group_models': True,
-    }
+# GRAPH_MODELS = {
+#     'all_applications': True,
+#     'group_models': True,
+#     }
