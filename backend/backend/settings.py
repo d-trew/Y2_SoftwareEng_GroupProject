@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'account',
     'chat',
     'jobListings',
+    'notifications',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
