@@ -19,7 +19,7 @@
                                     v-if="user.id !== userStore.user.id"
                                 >
                                 {{ user.name }}
-                                <img :src="getAvatarURL(user.get_avatar)" class="w-[40px] rounded-full">
+                                <img :src="user.get_avatar" class="w-[40px] rounded-full">
                                 </p>
                             </template>
                         </div>
@@ -52,7 +52,7 @@
                                 <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
                             </div>
                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
+                                <img :src="message.created_by.avatar" class="w-[40px] rounded-full">
                             </div>
                         </div>
 
@@ -62,7 +62,7 @@
                             v-else
                         >
                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
+                                <img :src="message.created_by.avatar" class="w-[40px] rounded-full">
                             </div>
                             <div v-if="message.image">
                                 <img :src="getImageURL(message.image)" alt="Attached Image" class="w-full rounded-lg">
