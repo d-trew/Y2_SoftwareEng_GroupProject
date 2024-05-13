@@ -56,36 +56,40 @@
     <Toast />
 </template>
 
-<script>
-    import axios from 'axios'
-    import Toast from '@/components/Toast.vue'
-    import { useUserStore } from '@/stores/user'
-    import { computed } from 'vue';
+<<script>
+import axios from 'axios'
+import Toast from '@/components/Toast.vue'
+import { useUserStore } from '@/stores/user'
+import { computed, onMounted } from 'vue';
 
+export default {
+    setup() {
+        const userStore = useUserStore()
 
-    export default {
-        setup() {
-            const userStore = useUserStore()
+        // Ensure that user is reactive
+        const user = computed(() => userStore.user)
 
-            return {
-                userStore
-            }
-        },
+        // Initialize store on component mount
+        onMounted(() => {
+            userStore.initStore()
 
-        components: {
-            Toast
-        },
-
-        beforeCreate() {
-            this.userStore.initStore()
-
-            const token = this.userStore.user.access
+            const token = user.value.access
 
             if (token) {
                 axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             } else {
                 axios.defaults.headers.common["Authorization"] = "";
             }
+        })
+
+        return {
+            user,
+            userStore
         }
+    },
+
+    components: {
+        Toast
     }
+}
 </script>
