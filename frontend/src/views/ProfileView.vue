@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
         <div class="main-left col-span-1">
             <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
-                <img :src="user.get_avatar" class="mb-6 rounded-full">
+                <img :src="getAvatarURL(user.avatar)" class="mb-6 rounded-full">
                 
                 <p><strong>{{ user.name }}</strong></p>
                 <p><strong>{{ user.id }}</strong></p>
@@ -63,7 +63,7 @@
                 class="p-4 bg-white border border-gray-200 rounded-lg"
                 v-for="post in posts"
                 v-bind:key="post.id"
-            > 
+            >
                 <FeedItem v-bind:post="post" v-on:deletePost="deletePost"/>
             </div>
         </div>
@@ -103,10 +103,11 @@ export default {
     setup() {
         const userStore = useUserStore()
         const toastStore = useToastStore()
-
+        const WEBSITE_URL = 'http://127.0.0.1:8000';
         return {
             userStore,
-            toastStore
+            toastStore,
+            WEBSITE_URL
         }
     },
     
@@ -149,6 +150,7 @@ export default {
 
     components: {
         YouMayKnow,
+        // Trends,
         FeedItem,
         FeedForm
     },
@@ -167,10 +169,18 @@ export default {
     },
 
     methods: {
-        deletePost(id) {
-            this.posts = this.posts.filter(post => post.id !== id)
+        // deletePost(id) {
+        //     this.posts = this.posts.filter(post => post.id !== id)
+        // },
+        getAvatarURL(avatarPath) {
+            if (avatarPath) {
+                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                return this.WEBSITE_URL + avatarPath;
+            } else {
+                // Fallback to default avatar URL
+                return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
+            }
         },
-
         sendDirectMessage() {
             console.log('sendDirectMessage')
 
@@ -210,10 +220,10 @@ export default {
                 .get(`/api/posts/profile/${this.$route.params.id}/`)
                 .then(response => {
                     console.log('data', response.data)
-
+                    console.log('user', response.data.user)
                     this.posts = response.data.posts
                     this.user = response.data.user
-                    this.can_send_connection_request = response.data.can_send_connection_request
+                    this.can_send_friendship_request = response.data.can_send_friendship_request
                 })
                 .catch(error => {
                     console.log('error', error)
