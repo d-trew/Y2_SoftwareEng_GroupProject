@@ -8,14 +8,6 @@
                 <FeedItem v-bind:post="post" />
             </div>
 
-            <div
-                class="p-4 ml-6 bg-white border border-gray-200 rounded-lg"
-                v-for="comment in post.comments"
-                v-bind:key="comment.id"
-            >
-                <CommentItem v-bind:comment="comment" />
-            </div>
-
             <div class="bg-white border border-gray-200 rounded-lg">
                 <form v-on:submit.prevent="submitForm" method="post">
                     <div class="p-4">  

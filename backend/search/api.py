@@ -1,0 +1,20 @@
+from django.http import JsonResponse
+
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
+from account.models import User
+from account.serializers import UserSerializer
+
+@api_view(['POST'])
+def search(request):
+    data = request.data
+    query = data['query']
+    user_ids = [request.user.id]
+
+    for user in request.user.connections.all():
+        user_ids.append(user.id)
+
+    users = User.objects.filter(name__icontains=query)
+    users_serializer = UserSerializer(users, many=True)
+    
+    return JsonResponse({'users': users_serializer.data}, safe=False)

@@ -9,5 +9,6 @@ urlpatterns = [
     path('<uuid:pk>/delete/', api.job_delete, name='job_delete'),
     path('<uuid:pk>/report/', api.job_report, name='job_report'),
     path('profile/<uuid:id>/', api.job_list_profile, name='job_list_profile'),
+    # path('connections/suggested/', api.my_connection_suggestions, name='my_connection_suggestions'),
     path('create/', api.job_create, name='job_create'),
 ]

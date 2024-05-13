@@ -42,8 +42,8 @@ const router = createRouter({
       component: FeedView
     },
     {
-      path: '/messages',
-      name: 'messages',
+      path: '/chat',
+      name: 'chat',
       component: ChatView
     },
     {

@@ -7,6 +7,9 @@ from account.models import User
 from .models import Conversation, ConversationMessage
 from .serializers import ConversationSerializer, ConversationDetailSerializer, ConversationMessageSerializer
 
+# import logging
+
+# logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
 def conversation_list(request):
@@ -33,6 +36,8 @@ def conversation_get_or_create(request, user_pk):
     if conversations.exists():
         conversation = conversations.first()
     else:
+        # logger.debug('Creating new conversation')
+        # logger.debug(request.user)
         conversation = Conversation.objects.create()
         conversation.users.add(user, request.user)
         conversation.save()

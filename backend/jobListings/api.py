@@ -119,3 +119,9 @@ def job_report(request, pk):
     job.save()
 
     return JsonResponse({'message': 'job reported'})
+
+# @api_view(['GET'])
+# def my_connection_suggestions(request):
+#     serializer = UserSerializer(request.user.people_you_may_know.all(), many=True)
+
+#     return JsonResponse(serializer.data, safe=False)
