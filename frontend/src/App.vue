@@ -56,7 +56,7 @@
     <Toast />
 </template>
 
-<<script>
+<script>
 import axios from 'axios'
 import Toast from '@/components/Toast.vue'
 import { useUserStore } from '@/stores/user'
