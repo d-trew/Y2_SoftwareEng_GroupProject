@@ -26,10 +26,14 @@ SECRET_KEY = 'django-insecure-bo&jvu-1rr6&ggjb3!-agh0f3wvrc=_@w&85pz2lhqj8-ms#z_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
+WEBSITE_URL = 'http://127.0.0.1:8000'
 
 # Application definition
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 AUTH_USER_MODEL = 'account.User'
 
 SIMPLE_JWT = {
@@ -49,14 +53,33 @@ REST_FRAMEWORK = {
     ),
 }
 
+# THE PROBLEM
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:5173"
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://127.0.0.1:5173"
+# ]
+#changed from
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173"
+    "http://localhost:5173",
+    "http://localhost:8000",  # Example additional origin
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5173"
-
+    "http://localhost:5173",
+    "http://localhost:8000",  # Example additional origin
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -66,9 +89,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'chat',
+    'jobListings',
+    'notification',
+    'search',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -148,9 +176,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# GRAPH_MODELS = {
+#     'all_applications': True,
+#     'group_models': True,
+#     }
