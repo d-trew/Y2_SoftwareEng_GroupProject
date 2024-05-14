@@ -1,6 +1,6 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4 pt-14">
-        <div class="main-center col-span-4 space-y-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
+        <div class="main-center col-span-3 space-y-4">
             <div 
                 class="p-4 bg-white border border-gray-200 rounded-lg"
                 v-for="notification in notifications"
@@ -13,7 +13,7 @@
             </div>
 
             <div 
-                class="p-4 bg-white border border-gray-200 rounded-lg text-center"
+                class="p-4 bg-white border border-gray-200 rounded-lg"
                 v-else
             >
                 You don't have any unread notifications!
