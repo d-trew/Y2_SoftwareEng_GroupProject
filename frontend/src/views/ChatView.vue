@@ -1,7 +1,7 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4 pt-14">
+    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
         <div class="main-left col-span-1">
-            <div class="p-4 bg-white border border-gray-200 rounded-lg min-h-full space-y-5">
+            <div class="p-4 bg-white border border-gray-200 rounded-lg">
                 <div class="space-y-4">
                     <div 
                         class="flex items-center justify-between"
@@ -18,10 +18,9 @@
                                     class="text-xs font-bold"
                                     v-if="user.id !== userStore.user.id"
                                 >
-                                    <img :src="getAvatarURL(user.get_avatar)" class="w-[40px] rounded-full">
+                                {{ user.name }}
+                                <img :src="getAvatarURL(user.get_avatar)" class="w-[40px] rounded-full">
                                 </p>
-
-                                <h2 v-if="user.id !== userStore.user.id" class="text-xs font-bold">{{ user.name }}</h2>
                             </template>
                         </div>
                             
@@ -84,31 +83,21 @@
             <div class="bg-white border border-gray-200 rounded-lg">
                 <form v-on:submit.prevent="submitForm">
                     <div class="p-4">  
-                        <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="Message?"></textarea>
+                        <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you want to say?"></textarea>
                     </div>
                     
-                    <div class="p-4 flex items-center justify-between">
+                    <div class="p-4">
                         <!-- Hidden file input -->
                         <input type="file" id="fileInput" style="display: none;" v-on:change="handleFileUpload">
                         <!-- Button to trigger file input -->
-                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg" v-on:click="openFileInput">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                            </svg>
-                        </button>
+                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg" v-on:click="openFileInput">Choose File</button>
                         <!-- Display selected file name (optional) -->
                         <span v-if="selectedFile">{{ selectedFile.name }}</span>
-                        
-                        <button class="inline-block py-4 px-6 bg-blue-500 text-white rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                            </svg>
-                        </button>
                     </div>
 
-                    <!-- <div class="p-4 border-t border-gray-100 flex justify-between">
+                    <div class="p-4 border-t border-gray-100 flex justify-between">
                         <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Send</button>
-                    </div> -->
+                    </div>
                 </form>
             </div>
         </div>
