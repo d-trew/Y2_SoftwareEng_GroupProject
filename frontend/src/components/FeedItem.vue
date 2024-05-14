@@ -1,7 +1,7 @@
 <template>
     <div class="mb-6 flex items-center justify-between">
         <div class="flex items-center space-x-6">
-            <img :src="getAvatarURL(post.created_by.avatar)" class="w-[40px] rounded-full">
+            <img :src="post.created_by.get_avatar" class="w-[40px] rounded-full">
             
             <p>
                 <strong>
@@ -16,10 +16,8 @@
     <template v-if="post.attachments.length">
         <img v-for="image in post.attachments" v-bind:key="image.id" :src="image.get_image" class="w-full mb-4 rounded-xl">
     </template>
-    <h1 class="text-2xl font-semibold">{{ post.title }}</h1>
+
     <p>{{ post.description }}</p>
-    <p>Date posted: {{ formatDate(post.posted_at) }}</p>
-    <p>Deadline: {{ formatDate(post.deadline) }}</p>
 
     <div class="my-6 flex justify-between">
         <div>
@@ -75,11 +73,10 @@ export default {
     setup() {
         const userStore = useUserStore()
         const toastStore = useToastStore()
-        const WEBSITE_URL = 'http://127.0.0.1:8000'
+
         return {
             userStore,
-            toastStore,
-            WEBSITE_URL
+            toastStore
         }
     },
 
@@ -145,10 +142,6 @@ export default {
                 return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
             }
         },
-        formatDate(date) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(date).toLocaleDateString(undefined, options);
-        }
     },
     components: { RouterLink }
 }
