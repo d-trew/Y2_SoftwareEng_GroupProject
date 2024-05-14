@@ -1,0 +1,277 @@
+<template>
+    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4 pt-14">
+        <div class="main-left col-span-1">
+            <div class="p-4 bg-white border border-gray-200 rounded-lg min-h-full space-y-5">
+                <div class="space-y-4">
+                    <div 
+                        class="flex items-center justify-between"
+                        v-for="conversation in conversations"
+                        v-bind:key="conversation.id"
+                        v-on:click="setActiveConversation(conversation.id)"
+                    >
+                        <div class="flex items-center space-x-2">
+                            <template
+                                v-for="user in conversation.users"
+                                v-bind:key="user.id"
+                            >
+                                <p 
+                                    class="text-xs font-bold"
+                                    v-if="user.id !== userStore.user.id"
+                                >
+                                    <img :src="getAvatarURL(user.get_avatar)" class="w-[40px] rounded-full">
+                                </p>
+
+                                <h2 v-if="user.id !== userStore.user.id" class="text-xs font-bold">{{ user.name }}</h2>
+                            </template>
+                        </div>
+                            
+                        <span class="text-xs text-gray-500">{{ conversation.modified_at_formatted }} ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-center col-span-3 space-y-4">
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <div class="flex flex-col flex-grow p-4">
+                    <template
+                        v-for="message in activeConversation.messages"
+                        v-bind:key="message.id"
+                    >
+                        <div
+                            class="flex w-full mt-2 space-x-3 max-w-md ml-auto justify-end"
+                            v-if="message.created_by.id == userStore.user.id"
+                        >
+                            <div>
+                                <!-- Display the image if available -->
+                                <template v-if="message.image">
+                                    <img :src="getImageURL(message.image)" class="max-w-md rounded-lg">
+                                </template>
+                                <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
+                                    <p class="text-sm">{{ message.body }}</p>
+                                </div>
+                                <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
+                            </div>
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
+                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
+                            </div>
+                        </div>
+
+
+                        <div 
+                            class="flex w-full mt-2 space-x-3 max-w-md"
+                            v-else
+                        >
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
+                                <img :src="getAvatarURL(message.created_by.avatar)" class="w-[40px] rounded-full">
+                            </div>
+                            <div v-if="message.image">
+                                <img :src="getImageURL(message.image)" alt="Attached Image" class="w-full rounded-lg">
+                                <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
+                            </div>
+                            <div v-else>
+                                <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                                    <p class="text-sm">{{ message.body }}</p>
+                                </div>
+                                <span class="text-xs text-gray-500 leading-none">{{ message.created_at_formatted }} ago</span>
+                            </div>
+
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg">
+                <form v-on:submit.prevent="submitForm">
+                    <div class="p-4">  
+                        <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="Message?"></textarea>
+                    </div>
+                    
+                    <div class="p-4 flex items-center justify-between">
+                        <!-- Hidden file input -->
+                        <input type="file" id="fileInput" style="display: none;" v-on:change="handleFileUpload">
+                        <!-- Button to trigger file input -->
+                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg" v-on:click="openFileInput">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                            </svg>
+                        </button>
+                        <!-- Display selected file name (optional) -->
+                        <span v-if="selectedFile">{{ selectedFile.name }}</span>
+                        
+                        <button class="inline-block py-4 px-6 bg-blue-500 text-white rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- <div class="p-4 border-t border-gray-100 flex justify-between">
+                        <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Send</button>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
+
+export default {
+    name: 'chat',
+
+    setup() {
+        const userStore = useUserStore()
+        const WEBSITE_URL = 'http://127.0.0.1:8000';
+        return {
+            userStore,
+            WEBSITE_URL
+        }
+    },
+
+    data() {
+        return {
+            conversations: [],
+            activeConversation: {},
+            body: '',
+            selectedFile: null
+        }
+    },
+
+    mounted() {
+        this.getConversations()
+    },
+    
+    methods: {
+        setActiveConversation(id) {
+            console.log('setActiveConversation', id)
+
+            this.activeConversation = id
+            this.getMessages()
+        },
+        getConversations() {
+            console.log('getConversations')
+
+            axios
+                .get('/api/chat/')
+                .then(response => {
+                    console.log(response.data)
+
+                    this.conversations = response.data
+
+                    if (this.conversations.length) {
+                        this.activeConversation = this.conversations[0].id
+                    }
+
+                    this.getMessages()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+
+        getMessages() {
+            console.log('getMessages')
+
+            axios
+                .get(`/api/chat/${this.activeConversation}/`)
+                .then(response => {
+                    console.log(response.data)
+
+                    this.activeConversation = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+        submitForm() {
+            console.log('submitForm', this.body);
+
+            // Check if the message body is empty and no file is selected
+            if (!this.body.trim() && !this.selectedFile) {
+                // Optionally display an error message or handle the condition as needed
+                return;
+            }
+            // Construct FormData object
+            const formData = new FormData();
+            formData.append('body', this.body);
+            formData.append('image', this.selectedFile);
+
+            axios
+                .post(`/api/chat/${this.activeConversation.id}/send/`,formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${this.userStore.user.access}`
+                    }
+                })
+                .then(response => {
+                    console.log(response.data);
+
+                    // Check if the response contains an image URL
+                    const imageUrl = response.data.image;
+
+                    // Construct the message object
+                    const message = {
+                        body: this.body,
+                        image: imageUrl, // Assign the image URL to the message object
+                        created_by: this.userStore.user,
+                        created_at_formatted: '0 minutes' // You may need to adjust this value based on your requirements
+                    };
+
+                    // Push the message object into the conversation messages array
+                    this.activeConversation.messages.push(message);
+
+                    // Clear the message body after sending
+                    this.body = '';
+                    // Clear the selected file after sending
+                    this.selectedFile = null;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        handleFileUpload(event) {
+            this.selectedFile = event.target.files[0];
+        },
+        openFileInput() {
+            // Trigger click event of file input
+            document.getElementById('fileInput').click();
+        },
+
+        // submitForm() {
+        //     console.log('submitForm', this.body)
+
+        //     axios
+        //         .post(`/api/chat/${this.activeConversation.id}/send/`, {
+        //             body: this.body
+        //         })
+        //         .then(response => {
+        //             console.log(response.data)
+
+        //             this.activeConversation.messages.push(response.data)
+        //         })
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        // },
+        getAvatarURL(avatarPath) {
+            if (avatarPath) {
+                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                return this.WEBSITE_URL + avatarPath;
+            } else {
+                // Fallback to default avatar URL
+                return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
+            }
+        },
+        getImageURL(imageUrl) {
+            if (imageUrl) {
+                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
+                return this.WEBSITE_URL + imageUrl;
+            }
+        }
+    }
+}
+</script>
