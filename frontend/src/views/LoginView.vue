@@ -100,7 +100,7 @@ export default {
                     .then(response => {
                         this.userStore.setUserInfo(response.data)
 
-                        this.$router.push('/dashboard')
+                        this.$router.push('/feed')
                     })
                     .catch(error => {
                         console.log('error', error)

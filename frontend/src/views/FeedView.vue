@@ -126,7 +126,6 @@ export default {
                     console.log('data', response.data)
 
                     this.posts = response.data
-                    this.posts.reverse()
                 })
                 .catch(error => {
                     console.log('error', error)

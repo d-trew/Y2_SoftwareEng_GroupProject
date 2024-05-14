@@ -39,7 +39,7 @@
                     <template v-if="userStore.user.isAuthenticated && userStore.user.id">
                         <RouterLink :to="{name: 'profile', params:{'id': userStore.user.id}}">
                         <!-- Include the 'media' prefix in the avatar URL -->
-                        <img :src="getAvatarURL(userStore.user.avatar)" class="rounded-full w-8">
+                        <img :src="userStore.user.avatar" class="rounded-full w-8">
                         </RouterLink>
                     </template>
 
@@ -84,7 +84,7 @@ export default {
 
         // Ensure that user is reactive
         const user = computed(() => userStore.user)
-        const WEBSITE_URL = 'http://127.0.0.1:8000'
+
         // Initialize store on component mount
         onMounted(() => {
             userStore.initStore()
@@ -100,26 +100,12 @@ export default {
 
         return {
             user,
-            userStore,
-            WEBSITE_URL
+            userStore
         }
     },
 
     components: {
         Toast
-    },
-
-    methods: {
-        getAvatarURL(avatarPath) {
-            if (avatarPath) {
-                // Assuming WEBSITE_URL is a global variable that holds the base URL of your website
-                return this.WEBSITE_URL + avatarPath;
-            } else {
-                // Fallback to default avatar URL
-                return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
-            }
-        },
     }
-
 }
 </script>
