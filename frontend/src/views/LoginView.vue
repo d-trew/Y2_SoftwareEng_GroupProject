@@ -1,12 +1,13 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4 pt-14">
         <div class="main-left">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <h1 class="mb-6 text-2xl">Log in</h1>
+                <h1 class="mb-6 text-2xl">Login</h1>
 
                 <p class="mb-6 text-gray-500">
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
+                    CareerVue is a platform for job seekers and employers to connect. 
+                    Sail the seas of employment. 
+                    Login to discover your opportunity today!
                 </p>
 
                 <p class="font-bold">
@@ -35,7 +36,7 @@
                     </template>
 
                     <div>
-                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Log in</button>
+                        <button class="py-4 px-6 bg-blue-500 text-white rounded-lg">Login</button>
                     </div>
                 </form>
             </div>

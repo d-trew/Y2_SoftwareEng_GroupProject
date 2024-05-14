@@ -1,20 +1,20 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4 pt-14">
         <div class="main-left col-span-1">
             <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
-                <img :src="getAvatarURL(user.avatar)" class="mb-6 rounded-full">
+                <img :src="getAvatarURL(user.avatar)" class="mb-6 h-full w-full rounded-full object-cover border-2 border-white">
                 
-                <p><strong>{{ user.name }}</strong></p>
-                <p><strong>{{ user.id }}</strong></p>
+                <p><strong>Name: </strong>{{ user.name }}</p>
+                <p><strong>Id: </strong>{{ user.id }}</p>
 
                 <div class="mt-6 flex space-x-8 justify-around" v-if="user.id">
                     <RouterLink :to="{name: 'connections', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.connections_count }} connections</RouterLink>
-                    <p class="text-xs text-gray-500">{{ user.posts_count }} posts</p>
+                    <p class="text-xs text-gray-500">0 posts</p>
                 </div>
 
-                <div class="mt-6">
+                <div class="mt-6 flex items-center justify-between px-3">
                     <button 
-                        class="inline-block py-4 px-3 bg-purple-600 text-xs text-white rounded-lg" 
+                        class="inline-block py-4 px-3 bg-blue-500 text-xs text-white rounded-lg" 
                         @click="sendconnectionRequest"
                         v-if="userStore.user.id !== user.id && can_send_connection_request"
                     >
@@ -22,19 +22,24 @@
                     </button>
 
                     <button 
-                        class="inline-block mt-4 py-4 px-3 bg-purple-600 text-xs text-white rounded-lg" 
+                        class="inline-block mt-4 py-4 px-3 bg-blue-500 text-xs text-white rounded-lg" 
                         @click="sendDirectMessage"
                         v-if="userStore.user.id !== user.id"
                     >
-                        Send direct message
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
                     </button>
 
                     <RouterLink 
-                        class="inline-block mr-2 py-4 px-3 bg-purple-600 text-xs text-white rounded-lg" 
+                        class="inline-block mr-2 py-4 px-3 bg-blue-500 text-xs text-white rounded-lg" 
                         to="/profile/edit"
                         v-if="userStore.user.id === user.id"
                     >
-                        Edit profile
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                        <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                    </svg>
                     </RouterLink>
 
                     <button 
@@ -42,7 +47,9 @@
                         @click="logout"
                         v-if="userStore.user.id === user.id"
                     >
-                        Log out
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6ZM5.78 8.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 0 0 0 1.06l3 3a.75.75 0 0 0 1.06-1.06l-1.72-1.72H15a.75.75 0 0 0 0-1.5H4.06l1.72-1.72a.75.75 0 0 0 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
                     </button>
                 </div>
             </div>
@@ -71,7 +78,7 @@
         <div class="main-right col-span-1 space-y-4">
             <YouMayKnow />
 
-            <!-- <Trends /> -->
+            <Industries />
         </div>
     </div>
 </template>
@@ -92,6 +99,7 @@ input[type="file"] {
 <script>
 import axios from 'axios'
 import YouMayKnow from '../components/YouMayKnow.vue'
+import Industries from '../components/Industries.vue'
 import FeedItem from '../components/FeedItem.vue'
 import FeedForm from '../components/FeedForm.vue'
 import { useUserStore } from '@/stores/user'
@@ -150,7 +158,7 @@ export default {
 
     components: {
         YouMayKnow,
-        // Trends,
+        Industries,
         FeedItem,
         FeedForm
     },
@@ -169,6 +177,18 @@ export default {
     },
 
     methods: {
+        getFeed() {
+            axios
+                .get('/api/posts/')
+                .then(response => {
+                    console.log('data', response.data)
+
+                    this.posts = response.data
+                })
+                .catch(error => {
+                    console.log('error', error)
+                })
+        },
         // deletePost(id) {
         //     this.posts = this.posts.filter(post => post.id !== id)
         // },
@@ -178,7 +198,7 @@ export default {
                 return this.WEBSITE_URL + avatarPath;
             } else {
                 // Fallback to default avatar URL
-                return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
+                return 'https://vectorified.com/images/no-profile-picture-icon-14.png';  // Replace with the actual URL
             }
         },
         sendDirectMessage() {
