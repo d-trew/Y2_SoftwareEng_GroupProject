@@ -1,6 +1,7 @@
 <template>
   <main class="pt-14">
     <div class="p-4 bg-white border border-gray-200 rounded-lg">
+      <!-- Hero -->
       <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Grid -->
         <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
