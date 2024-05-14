@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 from .models import User, ConnectionRequest
-# from notification.utils import create_notification
+from notification.utils import create_notification
 from .forms import SignUpForm
 from .serializers import UserSerializer
 from .forms import ProfileForm
@@ -16,7 +16,7 @@ def me(request):
         'id': request.user.id,
         'name': request.user.name,
         'email': request.user.email,
-        'avatar': request.user.get_avatar()
+        'avatar': request.user.avatar.url,
     })
 
 @api_view(['POST'])
@@ -32,7 +32,7 @@ def signup(request):
         'password1': data.get('password1'),
         'password2': data.get('password2'),
         # default pfp
-        # 'avatar': 'avatars/default.jpg'
+        'avatar': 'avatars/default.jpg'
     })
 
     if form.is_valid():
@@ -45,7 +45,7 @@ def signup(request):
         send_mail(
             "Please verify your email",
             f"The url for activating your account is: {url}",
-            "noreply@wey.com",
+            "noreply@careervue.com",
             [user.email],
             fail_silently=False,
         )
@@ -66,7 +66,7 @@ def send_connection_request(request, pk):
     if not check1 or not check2:
         friendrequest = ConnectionRequest.objects.create(created_for=user, created_by=request.user)
 
-        # notification = create_notification(request, 'new_friendrequest', friendrequest_id=friendrequest.id)
+        notification = create_notification(request, 'new_friendrequest', friendrequest_id=friendrequest.id)
 
         return JsonResponse({'message': 'connection request created'})
     else:
