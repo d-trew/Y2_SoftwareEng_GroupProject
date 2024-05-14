@@ -89,7 +89,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
-    'jobs',
     'chat',
     'jobListings',
     'notification',
@@ -97,6 +96,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
