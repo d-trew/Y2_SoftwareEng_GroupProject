@@ -1,11 +1,12 @@
 <template>
-    <div class="mb-6 flex items-center justify-between p-4 bg-gray-100 border border-gray-200 rounded-lg">
-        <div class="flex items-center">
-            <img :src="post.created_by.get_avatar" class="pr-4 w-24 rounded-full">
+    <div class="mb-6 flex items-center justify-between  p-4 bg-gray-100 border border-gray-200 rounded-lg">
+        <div class="flex items-center space-x-6">
+            <img :src="getAvatarURL(post.created_by.avatar)" class="pr-4 w-24 rounded-full">
             
             <div>
                 <p class="text-xl font-bold">{{ post.title }} posted by {{ post.created_by.name }}</p>
                 <p>{{ post.description }}</p>
+                <p>Date posted: {{ formatDate(post.posted_at) }}    Deadline: {{ formatDate(post.deadline) }}</p>
             </div>
         </div>
 
@@ -74,10 +75,11 @@ export default {
     setup() {
         const userStore = useUserStore()
         const toastStore = useToastStore()
-
+        const WEBSITE_URL = 'http://127.0.0.1:8000'
         return {
             userStore,
-            toastStore
+            toastStore,
+            WEBSITE_URL
         }
     },
 
@@ -143,6 +145,10 @@ export default {
                 return 'http://127.0.0.1:8000/media/avatars/default.png';  // Replace with the actual URL
             }
         },
+        formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(date).toLocaleDateString(undefined, options);
+        }
     },
     components: { RouterLink }
 }
