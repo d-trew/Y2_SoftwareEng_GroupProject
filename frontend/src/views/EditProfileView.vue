@@ -1,15 +1,14 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4 pt-14">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
         <div class="main-left">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
                 <h1 class="mb-6 text-2xl">Edit profile</h1>
 
                 <p class="mb-6 text-gray-500">
-                    You are the the page to edit your profile. You can change your name, e-mail and avatar here.
-                    
+                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
+                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
                 </p>
-                
-                <p class="mb-6 text-gray-500">Not at the right place?</p>
+
                 <RouterLink to="/profile/edit/password" class="underline">Edit password</RouterLink>
             </div>
         </div>
@@ -17,46 +16,33 @@
         <div class="main-right">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
                 <form class="space-y-6" v-on:submit.prevent="submitForm">
-                    <!-- Input fields -->
                     <div>
                         <label>Name</label><br>
                         <input type="text" v-model="form.name" placeholder="Your full name" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
                     </div>
+
                     <div>
                         <label>E-mail</label><br>
                         <input type="email" v-model="form.email" placeholder="Your e-mail address" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
                     </div>
 
-                    <!-- Avatar selection and submit button -->
-                    <div class="flex items-center justify-between"> <!-- Use flexbox to align items horizontally -->
-                        <div class="mr-4"> <!-- Adjust spacing between avatar selector and button -->
-                            <label for="avatar" class="cursor-pointer inline-block py-4 px-6 bg-blue-500 text-white rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
-                                </svg>
-                            </label>
-                            <input id="avatar" type="file" ref="file" accept="image/*" style="display: none;" @change="handleAvatarChange">
-                        </div>
-                        <div>
-                            <div v-if="form.avatar">
-                                <img :src="form.avatar" alt="Avatar" class="mt-4 rounded-full h-20 w-20">
-                            </div>
-                        </div>
-                        <div>
-                            <button type="submit" class="py-4 px-6 bg-blue-500 text-white rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-                        </div>
+                    <div>
+                        <label for="avatar" class="cursor-pointer inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Upload Avatar</label>
+                        <input id="avatar" type="file" ref="file" accept="image/*" style="display: none;" @change="handleAvatarChange">
+                    </div>
+                    <div v-if="form.avatar">
+                        <img :src="form.avatar" alt="Avatar" class="mt-4 rounded-full h-20 w-20">
                     </div>
 
-                    <!-- Error messages -->
                     <template v-if="errors.length > 0">
                         <div class="bg-red-300 text-white rounded-lg p-6">
                             <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                         </div>
                     </template>
+
+                    <div>
+                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Save changes</button>
+                    </div>
                 </form>
             </div>
         </div>

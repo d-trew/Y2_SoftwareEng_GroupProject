@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "newsapi": "^2.4.1"
+  },
+  "devDependencies": {
+    "sass": "^1.77.1"
+  }
+}
