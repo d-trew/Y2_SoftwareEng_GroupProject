@@ -14,23 +14,21 @@ from .serializers import JobSerializer,JobCategorySerializer
 
 @api_view(['GET'])
 def job_list(request):
-    # user_ids = []
+    user_ids = [request.user.id]
 
-    # # Include the current user's ID
-    # user_ids.append(request.user.id)
+    for user in request.user.connections.all():
+        user_ids.append(user.id)
 
-    # # Include the IDs of all connections' users
-    # for user in request.user.connections.all():
-    #     user_ids.append(user.id)
+    jobs = Job.objects.filter(created_by_id__in=list(user_ids))
 
-    # Fetch jobs created by any of the users
-    jobs = Job.objects.all()
+    trend = request.GET.get('trend', '')
 
-    # Serialize the jobs
+    if trend:
+        jobs = jobs.filter(description__icontains='#' + trend).filter(is_remote=False)
+
     serializer = JobSerializer(jobs, many=True)
 
     return JsonResponse(serializer.data, safe=False)
-
 
 
 @api_view(['GET'])

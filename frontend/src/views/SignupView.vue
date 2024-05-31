@@ -1,12 +1,13 @@
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4 pt-14">
         <div class="main-left">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
                 <h1 class="mb-6 text-2xl">Sign up</h1>
 
                 <p class="mb-6 text-gray-500">
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
+                    CareerVue is a platform for job seekers and employers to connect. 
+                    This is your gateway to a whole new world of employment opportunities. 
+                    Sign up to get started!
                 </p>
 
                 <p class="font-bold">
@@ -24,7 +25,7 @@
                     </div>
 
                     <div>
-                        <label>E-mail</label><br>
+                        <label>Email</label><br>
                         <input type="email" v-model="form.email" placeholder="Your e-mail address" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
                     </div>
 
@@ -45,7 +46,7 @@
                     </template>
 
                     <div>
-                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Sign up</button>
+                        <button class="py-4 px-6 bg-blue-500 text-white rounded-lg">Sign up</button>
                     </div>
                 </form>
             </div>
