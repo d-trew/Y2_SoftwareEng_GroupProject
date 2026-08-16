@@ -1,15 +1,16 @@
-Welcome to your repo for COM2027, Group 13!
-=====================================================
+# Sustainable Job Platform
 
-Feel free to change this README.
+A LinkedIn-inspired job-search web application built as a **six-person Agile software engineering project** at the University of Surrey. The platform focuses specifically on job discovery, with an emphasis on accessibility, inclusivity and a streamlined user experience.
 
-Getting started
----------------
+### Tech Stack
 
-Before you get started, you should update your com2027.yml file with your team members and project details. This will appear at [your static site](https://csee.pages.surrey.ac.uk/com2027/2023-24/Group13).
+* **Backend:** Django / Python
+* **Frontend:** Vue.js / JavaScript
+* **Database:** SQL
+* **Version Control:** Git
 
-You have two branches created for you, `trunk` and `release`. The final commit on `release` will be marked.
+### Key Takeaway
 
-Commits must be merged into `release` using a merge request, which requires two approvals. Force-pushing is disabled for both branches, as this can destroy your work. Only `trunk` can be merged into `release`.
+Built experience taking a software product from **requirements → implementation → testing** while collaborating within a team.
 
-You may develop directly on `trunk`, although it is recommended that you branch from `trunk` and submit merge requests (or merge directly onto the branch). How you use `trunk` is up to your team.
+**University:** University of Surrey | **Module:** Software Engineering Project
